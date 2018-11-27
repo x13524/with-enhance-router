@@ -34,6 +34,16 @@ export default {
       plugins: [ 'external-helpers' ]
     }),
     resolve(),
-    commonjs()
+    commonjs({
+      namedExports: {
+        'node_modules/react-router-named-routes/build/index.js': ['formatRoute'],
+      },
+    }),
+  ],
+  external: [
+    'react-router-named-routes',
+    'query-string',
+    'react-router-dom',
+    'react'
   ]
 }
