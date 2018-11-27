@@ -137,6 +137,6 @@ $router.push({
 
 ## License
 
-MIT © [jf3096](https://github.com/jf3096)
+MIT © [x13524](https://github.com/x13524)
 
-auther:    xucanhui
+auther:    xucnahui
