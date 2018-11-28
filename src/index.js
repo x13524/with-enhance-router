@@ -59,7 +59,6 @@ const withEnhanceRouter = (ComposedComponent) => {
       redirect = (push = true, {url, params = {}, qs = {}} = {}) => {
         let qsString = qs ? stringify(qs) : ''
         url = formatRoute(url, params);
-        debugger
         this.setState({
           push,
           redirectUrl: `${url}?${qsString}`
@@ -85,7 +84,6 @@ const withEnhanceRouter = (ComposedComponent) => {
       manageRouterMember({redirect, params, qs}) {
         return {
           push: (arg) => {
-            debugger
             const {url, params, qs} = RedirectDecorator.normalizeRouterActionArg(arg)
             redirect(true, RedirectDecorator.normalizeQueryString({url, params, qs}))
           },

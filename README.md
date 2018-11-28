@@ -10,26 +10,68 @@
 npm install --save with-enhance-router
 ```
 
-## Usage
 
-```jsx
-import React, { Component } from 'react'
-
-import MyComponent from 'with-enhance-router'
-
-class Example extends Component {
-  render () {
-    return (
-      <MyComponent />
-    )
-  }
-}
-```
 #### 插件作用:
-  
+ 跨页面传参
 
 #### 使用方法：
 引入此装饰器后, 可以直接点击调转跳转到新页面进行跨页面传参
+```javascript
+
+import withEnhanceRouter from 'with-enhance-router';
+
+export const routeNames = {
+  MAIN: '/',
+  LOGIN: '/login',
+  KOL: '/kol',
+  AUTH: '/auth',
+  AWARD: '/award/:noKolModal/:id/:text',
+  FRIEND: '/friend'
+}
+
+@withEnhanceRouter
+export default class Main extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginStatus: {
+        account: '',
+        authenticated: false,
+        modal: null
+      }
+    };
+  }
+
+  componentDidMount() {
+    console.log(this.props);
+  }
+
+  handleClick = () => {
+    const { $router } = this.props;
+    $router.push({
+      url: routeNames.AWARD,
+      params: {
+        id: 123
+      },
+      qs: {
+        aa: '123'
+      }
+    });
+  };
+
+  render() {
+    return (
+      <MobileLayout>
+        <div className={styles.main}>
+          <div onClick={this.handleClick}>点击按钮</div>
+        </div>
+      </MobileLayout>
+    );
+  }
+}
+
+```
+
 传参用法如下:
 1. 在页面中最顶层设置好各个路由地址
 ```javascript
@@ -46,42 +88,55 @@ export const routeNames = {
 
 一、不带参数跳转使用方法, 即直接传入 url 地址:
 ```javascript
-$router.push(routeNames.MAIN);  
+const { $router } = this.props;
+ handleClick = () => {
+    this.props.$router.push(routeNames.MAIN);  
+ }
 ```
 <br>  
 二、只通过 params 传递参数
 
 ```javascript
-$router.push({
-    url: routeNames.MAIN,
-    params: {
-        id: 123
-    }
-});  
+
+
+ handleClick = () => {
+   $router.push({
+       url: routeNames.MAIN,
+       params: {
+           id: 123
+       }
+   });  
+ }
+ 
 ```
 <br> 
 三、只通过 qs 传递参数  
 
 ```javascript
-$router.push({
-    url: routeNames.MAIN,
-    qs: {
-        aa: '123'
-    }
-});  
+handleClick = () => {
+   $router.push({
+       url: routeNames.MAIN,
+       qs: {
+           aa: '123'
+       }
+   }); 
+ }
+ 
 ```
 <br> 
-四、只通过 params 和 qs 传递参数  
+四、通过 params 和 qs 一起传递参数  
 
 ```javascript
-$router.push({
-    url: routeNames.MAIN,
-    params: {
-        id: 123
-    }, qs: {
-        aa: '123'
-    }
-}); 
+ handleClick = () => {
+    $router.push({
+        url: routeNames.MAIN,
+        params: {
+            id: 123
+        }, qs: {
+            aa: '123'
+        }
+    }); 
+  }
 ```
 <br> 
 
@@ -93,7 +148,7 @@ $router.push({
   }
 ```
 
-```
+
 按实际需求,可以直接穿地 进行 params (类似于:routeNames.AWARD ) 或 querystring 传参('./index.html?aa=123')
 - $router.push(routeNames.MAIN);
 - $router.push({url: routeNames.MAIN, params});
@@ -101,42 +156,11 @@ $router.push({
 - $router.replace(routeNames.MAIN);
 - $router.replace({url: routeNames.MAIN, params});
 - $router.replace({url: routeNames.MAIN, params: {id:123}, qs: {aa: '123'}});
-```
-
-```
-/**
- * 跳转装饰注入 react-router-dom
- * 近似 vue router api: https://router.vuejs.org/guide/essentials/navigation.html
- * @example
- */
- import { routeNames } from '@src/pages/app';
- @withEnhanceRouter
- export default class Example extends Component {
-    handleClick = () => {
-      const { $router } = this.props;
-      $router.push(routeNames.MAIN);
-      $router.push({url: routeNames.MAIN, params});
-      $router.push({url: routeNames.MAIN, params: {id:123}, qs: {aa: '123'}});
-      $router.replace(routeNames.MAIN);
-      $router.replace({url: routeNames.MAIN, params});
-      $router.replace({url: routeNames.MAIN, params: {id:123}, qs: {aa: '123'}});
-      $router.go(<前进或后退>);
-    }
-    render() {
-      // 直接获取路由参数
-      console.log(this.props.$router.params);
-      return (
-        <button onClick={ this.handleClick }>
-          Take me home!
-        </button>
-      );
-    }
-  }
-```
+- $router.go(<前进或后退>);
 
 
 ## License
 
 MIT © [x13524](https://github.com/x13524)
 
-auther:    xucnahui
+author: x13524    
